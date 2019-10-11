@@ -29,3 +29,7 @@ examples/elk
 Respect file structure, then run ``tampis ./examples/elk``, this will generate ``values-{{env}}.yaml`` files. Then, use this chart as an usual Helm chart.
 
 Note: this small Python script can be used in another context than Helm.
+
+# Naming
+
+``tampis`` from french word ``tant pis`` + ``template``
