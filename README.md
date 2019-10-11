@@ -1,6 +1,6 @@
 # tampis
 
-Helm sub-charts much better! templatize sub-charts values.yaml file.
+Helm sub-charts much better! templatize sub-charts values.yaml file. ``tampis`` is a very simple template engine, it generates files from template and YAML data file.
 
 # File structure
 
@@ -27,3 +27,5 @@ examples/elk
 # Usage
 
 Respect file structure, then run ``tampis ./examples/elk``, this will generate ``values-{{env}}.yaml`` files. Then, use this chart as an usual Helm chart.
+
+Note: this small Python script can be used in another context than Helm.
