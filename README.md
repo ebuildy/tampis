@@ -2,6 +2,10 @@
 
 Convert data + template to string. data is coming from a HOCON file, template from Jinja format.
 
+## Naming
+
+``tampis`` from french word ``tant pis`` + ``template``
+
 # Usage
 
 ## Print full configuration
@@ -21,7 +25,3 @@ Usefull to understand file includes, merges etc...
 ## HOCON spec
 
 https://github.com/lightbend/config/blob/master/HOCON.md
-
-# Naming
-
-``tampis`` from french word ``tant pis`` + ``template``
