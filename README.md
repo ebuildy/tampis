@@ -4,6 +4,16 @@ Convert data + template to string. data is coming from a HOCON file, template fr
 
 # Usage
 
+## Print full configuration
+
+```
+./tampis ./components/conso/config/dev.conf
+```
+
+Usefull to understand file includes, merges etc...
+
+## Templatize
+
 ```
 ./tampis ./components/conso/config/dev.conf ./components/conso/values-template.yaml > ./components/conso/values.yaml
 ```
