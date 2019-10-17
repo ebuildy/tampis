@@ -1,6 +1,6 @@
 # tampis
 
-Convert data + template to string. data is coming from a HOCON file, template from Jinja format.
+Convert data + template to string. data is coming from a HOCON file, template from Jinja format. My usecase is to build Helm values file from template and env'able config.
 
 ## Naming
 
@@ -15,6 +15,14 @@ Convert data + template to string. data is coming from a HOCON file, template fr
 ```
 
 Usefull to understand file includes, merges etc...
+
+## NEW option => "--config-path"
+
+Allow to select a sub configuration tree
+
+```
+./tampis ./components/conso/config/dev.conf --config-path=elasticsearch.ingress.certif
+```
 
 ## Templatize
 
