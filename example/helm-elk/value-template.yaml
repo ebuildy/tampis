@@ -1,0 +1,84 @@
+elasticsearch:
+  image: "docker.elastic.co/elasticsearch/elasticsearch-{{ global.elk.flavor }}"
+  imageTag: "{{ global.elk.version }}"
+
+  replicas: {{ elasticsearch.replicas }}
+
+  toto: ${?ENV}
+
+  clusterName: {{ elasticsearch.clusterName }}
+  nodeGroup: {{ elasticsearch.clientNodeGroup }}
+  masterService: {{ elasticsearch.clusterName }}-{{ elasticsearch.clientNodeGroup }}
+
+  sysctlInitContainer:
+    enabled: {{ global.has_priviligied_policy }}
+
+  certif_cname: {{ elasticsearch.ingress.certif.cname }}
+
+  roles:
+    master: "true"
+    ingest: "true"
+    data: "true"
+
+  ingress:
+    enabled: true
+    hosts:
+    - {{ elasticsearch.ingress.host }}
+    {% if global.ingress.use_tls %}
+    tls:
+    - hosts:
+      - {{ elasticsearch.ingress.host }}
+      secretName: {{ elasticsearch.ingress.certif.name }}
+    {% endif %}
+
+  # Permit co-located instances for solitary minikube virtual machines.
+  #antiAffinity: "soft"
+
+  # Shrink default JVM heap.
+  #esJavaOpts: "-Xmx512M -Xms512M"
+
+  #esConfig:
+  #  elasticsearch.yml: |
+  #    discovery:
+  #      type: single-node
+  #      seed_hosts: ""
+
+  {% if elasticsearch.storage is defined %}
+  volumeClaimTemplate:
+    accessModes: [ "ReadWriteOnce" ]
+    storageClassName: rook-ceph-block-retain
+    resources:
+      requests:
+        storage: {{ elasticsearch.storage.size }}
+  {% else %}
+  persistence:
+    enabled: false
+  {% endif %}
+
+kibana:
+  image: "docker.elastic.co/kibana/kibana-{{ global.elk.flavor }}"
+  imageTag: "{{ global.elk.version }}"
+
+  replicas: 1
+
+  elasticsearchHosts: "http://{{ elasticsearch.clusterName }}-{{ elasticsearch.clientNodeGroup }}:9200"
+
+  kibanaConfig:
+    kibana.yml: |
+      csp:
+        strict: false
+
+      logging:
+        quiet: true
+
+
+  ingress:
+    enabled: true
+    hosts:
+    - {{ kibana.ingress.host }}
+    {% if global.ingress.use_tls %}
+    tls:
+    - hosts:
+      - {{ kibana.ingress.host }}
+      secretName: {{ kibana.ingress.certif.name }}
+    {% endif %}
