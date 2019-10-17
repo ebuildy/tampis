@@ -1,0 +1,26 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  annotations:
+  name: {{ name }}
+  namespace: {{ namespace }}
+spec:
+  activeDeadlineSeconds: 300
+  backoffLimit: 6
+  completions: 1
+  parallelism: 1
+  template:
+    spec:
+      automountServiceAccountToken: true
+      containers:
+      - env:
+        - name: CERT_NAME
+          value: {{ name }}
+        - name: CERT_CNAME
+          value: {{ cname }}
+        - name: CERT_SAN
+          value: {{ cname }}
+        - name: CERT_DAYS
+          value: "360"
+        - name: TLS_SECRET_NAME
+          value: {{ name }}

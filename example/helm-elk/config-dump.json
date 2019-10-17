@@ -1,0 +1,45 @@
+{
+  "global": {
+    "has_priviligied_policy": false,
+    "ingress": {
+      "use_tls": true,
+      "host": {
+        "suffix": "my-k8s-cluster.dev"
+      }
+    },
+    "elk": {
+      "flavor": "oss",
+      "version": "7.4.0"
+    },
+    "namespace": "dev"
+  },
+  "elasticsearch": {
+    "enabled": true,
+    "clusterName": "conso",
+    "clientNodeGroup": "es",
+    "storage": {
+      "size": "20Gi"
+    },
+    "ingress": {
+      "host": "conso-elasticsearch.my-k8s-cluster.dev",
+      "certif": {
+        "name": "certif-conso-es",
+        "cname": "conso-elasticsearch.my-k8s-cluster.dev",
+        "namespace": "dev"
+      }
+    },
+    "replicas": 3
+  },
+  "kibana": {
+    "enabled": true,
+    "replicas": 1,
+    "ingress": {
+      "host": "conso.my-k8s-cluster.dev",
+      "certif": {
+        "name": "certif-kibana-conso-es",
+        "cname": "conso.my-k8s-cluster.dev",
+        "namespace": "dev"
+      }
+    }
+  }
+}
