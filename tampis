@@ -14,19 +14,23 @@ import textwrap
 def main():
     parser = argparse.ArgumentParser(description='Generate composed chart values.')
     parser.add_argument('config', type=str, help='HOCON formatted config file path.')
+    parser.add_argument('--config-path', type=str, help='Path to filter configuration.')
     parser.add_argument('template', type=str, help='The template path.', nargs='?', default='')
 
     args = parser.parse_args()
 
     confData = ConfigFactory.parse_file(args.config)
 
+    if args.config_path:
+        confData = confData.get_config(args.config_path)
+
     if args.template == '':
         b = HOCONConverter.convert(confData, output_format='json', indent=2, compact=False)
         print(b)
     else:
-        env = Environment(loader=FileSystemLoader('.'))
+        env = Environment(loader=FileSystemLoader(['.', os.path.dirname(os.path.realpath(args.template))]))
 
-        templateEngine = env.get_template(args.template)
+        templateEngine = env.get_template(os.path.basename(args.template))
 
         print(templateEngine.render(confData))
 
