@@ -21,7 +21,7 @@ Usefull to understand file includes, merges etc...
 Allow to select a sub configuration tree
 
 ```
-./tampis ./components/conso/config/dev.conf --config-path=elasticsearch.ingress.certif
+./tampis --config-path=elasticsearch.ingress.certif ./components/conso/config/dev.conf 
 ```
 
 ## Templatize
