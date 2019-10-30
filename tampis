@@ -12,6 +12,13 @@ import os
 import textwrap
 
 def main():
+    def datetimefilter(value, format='%Y/%m/%d %H:%M'):
+        """Convert a datetime to a different format."""
+        return value.strftime(format)
+
+    def flatConfig(value, format='%Y/%m/%d %H:%M'):
+        return HOCONConverter.convert(value, output_format='properties', indent=0, compact=False).replace(' =', ':')
+
     parser = argparse.ArgumentParser(description='Generate composed chart values.')
     parser.add_argument('config', type=str, help='HOCON formatted config file path.')
     parser.add_argument('--config-path', type=str, help='Path to filter configuration.')
@@ -25,10 +32,13 @@ def main():
         confData = confData.get_config(args.config_path)
 
     if args.template == '':
-        b = HOCONConverter.convert(confData, output_format='json', indent=2, compact=False)
+        b = HOCONConverter.convert(confData, output_format='properties', indent=2, compact=False)
         print(b)
     else:
         env = Environment(loader=FileSystemLoader(['.', os.path.dirname(os.path.realpath(args.template))]))
+
+        env.filters['datetimefilter'] = datetimefilter
+        env.filters['flat'] = flatConfig
 
         templateEngine = env.get_template(os.path.basename(args.template))
 
